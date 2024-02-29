@@ -79,3 +79,15 @@ jobs:
       - name: Run unit tests on Pulumi functions in iac/plm
         run: go test -v .
         working-directory: iac/plm
+
+      - name: Download dependencies for iac/lcs
+        run: go mod download
+        working-directory: iac/lcs
+
+      - name: Run unit tests on Pulumi functions in iac/lcs
+        run: go test -v .
+        working-directory: iac/lcs
+        env:
+          PULUMI_CONFIG_SECRETS_PROVIDER: "passphrase"
+          PULUMI_CONFIG_PASSPHRASE: ""
+          PULUMI_SKIP_UPDATE_CHECK: "true"
