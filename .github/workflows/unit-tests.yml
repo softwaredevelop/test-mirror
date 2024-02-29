@@ -9,6 +9,7 @@ on:
       - main
     paths:
       - "cc/**/*_test.go"
+      - "iac/**/*_test.go"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -25,7 +26,7 @@ jobs:
           cancel_others: true
           concurrent_skipping: never
 
-  unit-tests:
+  unit_tests_in_cc:
     name: Unit tests
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' || endsWith(github.event.head_commit.modified, '_test.go') }}
@@ -47,3 +48,26 @@ jobs:
       - name: Run unit tests on code quality functions
         run: go test -v ./...
         working-directory: cc
+
+  unit_tests_in_iac:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' || endsWith(github.event.head_commit.modified, '_test.go') }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Go latest
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - name: Download dependencies
+        run: go mod download
+        working-directory: iac/plm/util
+
+      - name: Run unit tests on Pulumi functions
+        run: go test -v ./...
+        working-directory: iac/plm/util
