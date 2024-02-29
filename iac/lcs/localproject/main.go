@@ -53,21 +53,6 @@ func main() {
 			return err
 		}
 
-		// _, err = github.GetActionsPublicKey(ctx, &github.GetActionsPublicKeyArgs{
-		// 	Repository: repositoryName,
-		// }, nil)
-		// if err != nil {
-		// 	return err
-		// }
-
-		// _, err = github.NewActionsSecret(ctx, "newActionSecret", &github.ActionsSecretArgs{
-		// 	Repository: pulumi.String(repositoryName),
-		// 	SecretName: pulumi.String("TOKEN"),
-		// })
-		// if err != nil {
-		// 	return err
-		// }
-
 		ctx.Export("repository", repository.Name)
 		ctx.Export("repositoryUrl", repository.HtmlUrl)
 
