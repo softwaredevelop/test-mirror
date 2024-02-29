@@ -33,7 +33,7 @@ func main() {
 		panic(err)
 	}
 
-	dir, _ := os.Getwd()
+	dir, err := os.Getwd()
 	p := filepath.Join(dir, "..")
 	if err != nil {
 		panic(err)
