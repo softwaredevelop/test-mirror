@@ -27,7 +27,7 @@ jobs:
           concurrent_skipping: never
 
   unit_tests_in_cc:
-    name: Unit tests
+    name: Unit tests in cc
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' || endsWith(github.event.head_commit.modified, '_test.go') }}
     steps:
@@ -50,7 +50,7 @@ jobs:
         working-directory: cc
 
   unit_tests_in_iac:
-    name: Unit tests
+    name: Unit tests in iac
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' || endsWith(github.event.head_commit.modified, '_test.go') }}
     steps:
