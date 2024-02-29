@@ -40,44 +40,43 @@ func TestPulumiLocal(t *testing.T) {
 	t.Parallel()
 	ctx := context.Background()
 
-	// t.Run("Test_pulumi_local", func(t *testing.T) {
-	// 	t.Parallel()
-	// 	c = c.Pipeline("test_pulumi_local")
-	// 	require.NotNil(t, c)
+	t.Run("Test_pulumi_local", func(t *testing.T) {
+		t.Parallel()
+		c = c.Pipeline("test_pulumi_local")
+		require.NotNil(t, c)
 
-	// 	dir, err := os.Getwd()
-	// 	p := filepath.Join(dir, "..", "lcs")
-	// 	require.NoError(t, err)
-	// 	require.NotEmpty(t, p)
+		dir, err := os.Getwd()
+		p := filepath.Join(dir, "..", "lcs")
+		require.NoError(t, err)
+		require.NotEmpty(t, p)
 
-	// 	container := c.
-	// 		Container().
-	// 		From("golang:alpine")
-	// 	require.NotNil(t, container)
+		container := c.
+			Container().
+			From("golang:alpine")
+		require.NotNil(t, container)
 
-	// 	id, err := container.
-	// 		WithMountedDirectory("/mountedtmp", c.Host().Directory(p)).
-	// 		ID(ctx)
-	// 	require.NoError(t, err)
-	// 	require.NotEmpty(t, id)
+		id, err := container.
+			WithMountedDirectory("/mountedtmp", c.Host().Directory(p)).
+			ID(ctx)
+		require.NoError(t, err)
+		require.NotEmpty(t, id)
 
-	// 	id, err = util.PulumiInstall(c, id).
-	// 		WithWorkdir("/mountedtmp").
-	// 		WithEnvVariable("PULUMI_SKIP_UPDATE_CHECK", "true").
-	// 		WithEnvVariable("PULUMI_CONFIG_PASSPHRASE", "").
-	// 		WithExec([]string{"pulumi", "login", "--local"}).
-	// 		ID(ctx)
-	// 	require.NoError(t, err)
-	// 	require.NotEmpty(t, id)
+		id, err = util.PulumiInstall(c, id).
+			WithWorkdir("/mountedtmp").
+			WithEnvVariable("PULUMI_SKIP_UPDATE_CHECK", "true").
+			WithEnvVariable("PULUMI_CONFIG_PASSPHRASE", "").
+			WithExec([]string{"pulumi", "login", "--local"}).
+			ID(ctx)
+		require.NoError(t, err)
+		require.NotEmpty(t, id)
 
-	// 	reMatching := "TestLocalProject"
-	// 	_, err = c.Container(dagger.ContainerOpts{ID: id}).
-	// 		Pipeline("pulumi_localproject_test").
-	// 		WithExec([]string{"go", "mod", "download"}).
-	// 		WithExec([]string{"go", "test", "-v", "-run", reMatching}).
-	// 		Stdout(ctx)
-	// 	require.NoError(t, err)
-	// })
+		reMatching := "TestLocalProject"
+		_, err = c.Container(dagger.ContainerOpts{ID: id}).
+			Pipeline("pulumi_localproject_test").
+			WithExec([]string{"go", "test", "-v", "-run", reMatching}).
+			Stdout(ctx)
+		require.NoError(t, err)
+	})
 	t.Run("Test_mounted_host_parent_directory", func(t *testing.T) {
 		t.Parallel()
 		c = c.Pipeline("test_mounted_host_parent_directory")
