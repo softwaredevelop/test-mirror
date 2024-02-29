@@ -64,10 +64,18 @@ jobs:
         with:
           go-version: stable
 
-      - name: Download dependencies
+      - name: Download dependencies for iac/plm/util
         run: go mod download
         working-directory: iac/plm/util
 
-      - name: Run unit tests on Pulumi functions
+      - name: Run unit tests on Pulumi functions in iac/plm/util
         run: go test -v ./...
         working-directory: iac/plm/util
+
+      - name: Download dependencies for iac/plm
+        run: go mod download
+        working-directory: iac/plm
+
+      - name: Run unit tests on Pulumi functions in iac/plm
+        run: go test -v .
+        working-directory: iac/plm
