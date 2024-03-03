@@ -19,7 +19,7 @@ func main() {
 			Name:                pulumi.String(repositoryName),
 			Topics:              pulumi.StringArray{pulumi.String("pulumi"), pulumi.String("dagger"), pulumi.String("github"), pulumi.String("gitlab"), pulumi.String("test")},
 			Visibility:          pulumi.String("public"),
-		})
+		}, pulumi.Protect(false))
 		if err != nil {
 			return err
 		}
@@ -49,6 +49,37 @@ func main() {
 			Name:        pulumi.String("go-modules dependencies"),
 			Repository:  repository.Name,
 		})
+		if err != nil {
+			return err
+		}
+
+		_, err = github.GetActionsPublicKey(ctx, &github.GetActionsPublicKeyArgs{
+			Repository: "test-mirror",
+		}, pulumi.Parent(repository))
+		if err != nil {
+			return err
+		}
+
+		_, err = github.NewActionsSecret(ctx, "newActionsSecretGLR", &github.ActionsSecretArgs{
+			Repository: pulumi.String("test-mirror"),
+			SecretName: pulumi.String("GITLAB_REPOSITORY"),
+		}, pulumi.Parent(repository))
+		if err != nil {
+			return err
+		}
+
+		_, err = github.NewActionsSecret(ctx, "newActionsSecretGLT", &github.ActionsSecretArgs{
+			Repository: pulumi.String("test-mirror"),
+			SecretName: pulumi.String("GITLAB_TOKEN"),
+		}, pulumi.Parent(repository))
+		if err != nil {
+			return err
+		}
+
+		_, err = github.NewActionsSecret(ctx, "newActionsSecretGLO", &github.ActionsSecretArgs{
+			Repository: pulumi.String("test-mirror"),
+			SecretName: pulumi.String("GITLAB_OWNER"),
+		}, pulumi.Parent(repository))
 		if err != nil {
 			return err
 		}
